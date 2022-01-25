@@ -76,7 +76,8 @@ pipeline {
                 sudo docker container stop $NAME-v$VERSIONS || true;
                 sudo docker container rm $NAME-v$VERSIONS || true;
                 sudo docker rmi $DOCKER_HUB_USR/$NAME:$VERSIONS || true; 
-                sudo docker run -d --name $NAME-v$VERSIONS -p $PORTS:5000 $DOCKER_HUB_USR/$NAME:$VERSIONS;"
+                sudo docker run -d --name $NAME-v$VERSIONS -p $PORTS:5000 $DOCKER_HUB_USR/$NAME:$VERSIONS;
+                sudo docker logout || true""
                 """
         }
     }
@@ -84,6 +85,7 @@ pipeline {
   }
   post {
     always {
+        sh "docker logout || true"
         sh "docker-compose down || true"
     }
     unsuccessful{
