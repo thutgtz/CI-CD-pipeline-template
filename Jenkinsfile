@@ -6,7 +6,7 @@ pipeline {
       BRANCH_NAME = getCurrentBranch()
       VERSIONS = getVersion()
       PORTS = getPort()
-      NAME = 'cicd-template'
+      NAME = 'cicd-pipeline'
       DEV_IP = '68.183.226.229'
       PROD_IP = '68.183.226.229'
   }
