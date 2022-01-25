@@ -6,7 +6,7 @@ pipeline {
       BRANCH_NAME = getCurrentBranch()
       VERSIONS = getVersion()
       PORTS = getPort()
-      NAME = 'template'
+      NAME = 'cicd-template'
       DEV_IP = '68.183.226.229'
       PROD_IP = '68.183.226.229'
   }
@@ -40,7 +40,7 @@ pipeline {
         when {
             branch "main"
         }
-        
+
         steps {
             sh "sudo echo '$DOCKER_HUB_PSW' | docker login --username $DOCKER_HUB_USR --password-stdin"
             sh "sudo docker image tag $DOCKER_HUB_USR/$NAME:dev $DOCKER_HUB_USR/$NAME:$VERSIONS"
