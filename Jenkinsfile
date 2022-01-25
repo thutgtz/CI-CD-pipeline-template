@@ -32,7 +32,7 @@ pipeline {
             }
         }
         steps {
-            sh "sudo echo '$DOCKER_HUB_PSW' | docker login --username $DOCKER_HUB_USR --password-stdin"
+            sh "sudo echo '$DOCKER_HUB_PSW' | docker login --username $DOCKER_HUB_USR --password-stdin docker.io"
             sh "sudo docker push $DOCKER_HUB_USR/$NAME:dev"
         }
     }
@@ -42,7 +42,7 @@ pipeline {
         }
 
         steps {
-            sh "sudo echo '$DOCKER_HUB_PSW' | docker login --username $DOCKER_HUB_USR --password-stdin"
+            sh "sudo echo '$DOCKER_HUB_PSW' | docker login --username $DOCKER_HUB_USR --password-stdin docker.io"
             sh "sudo docker image tag $DOCKER_HUB_USR/$NAME:dev $DOCKER_HUB_USR/$NAME:$VERSIONS"
             sh "sudo docker rmi $DOCKER_HUB_USR/$NAME:dev"
             sh "sudo docker push $DOCKER_HUB_USR/$NAME:$VERSIONS"
@@ -56,7 +56,7 @@ pipeline {
         }
         steps{
             sh """SSHPASS=$SSH_PSW sshpass -e ssh -o StrictHostKeyChecking=no $SSH_USR@$DEV_IP \
-                "sudo echo '$DOCKER_HUB_PSW' | docker login --username $DOCKER_HUB_USR --password-stdin;
+                "sudo echo '$DOCKER_HUB_PSW' | docker login --username $DOCKER_HUB_USR --password-stdin docker.io;
                 sudo mkdir -p /root/app;
                 sudo docker container stop $NAME-dev || true;
                 sudo docker container rm $NAME-dev || true;
@@ -71,7 +71,7 @@ pipeline {
         }
         steps{
             sh """SSHPASS=$SSH_PSW sshpass -e ssh -o StrictHostKeyChecking=no $SSH_USR@$PROD_IP \
-                "sudo echo '$DOCKER_HUB_PSW' | docker login --username $DOCKER_HUB_USR --password-stdin;
+                "sudo echo '$DOCKER_HUB_PSW' | docker login --username $DOCKER_HUB_USR --password-stdin docker.io;
                 sudo mkdir -p /root/app;
                 sudo docker container stop $NAME-v$VERSIONS || true;
                 sudo docker container rm $NAME-v$VERSIONS || true;
@@ -84,7 +84,8 @@ pipeline {
   }
   post {
     always {
-        sh "docker-compose down || true"
+        sh "sudo docker logout || true"
+        sh "sudo docker-compose down || true"
     }
     unsuccessful{
         sh "echo 'failed !!'"
