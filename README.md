@@ -116,6 +116,7 @@ sh "sudo cp /root/file/<anyfilesname> ."
 > - Go to Jenkins Dashboard select your project
 > - Click "build Now" to test build
 > - Finish !!
+##### Commit message should be "0.1:5001:first commit" pattern "<version>:<port>:<message>"
 
 ## For Developer 
 > - Clone project 
